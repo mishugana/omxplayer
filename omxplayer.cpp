@@ -1498,6 +1498,7 @@ int main(int argc, char *argv[])
         OMXClock::OMXSleep(10);
         continue;
       }
+      printf("OKOKOKOK\n");
       break;
     }
 
