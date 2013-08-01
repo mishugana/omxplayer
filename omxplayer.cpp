@@ -1005,6 +1005,8 @@ int main(int argc, char *argv[])
   while(!m_stop && loop_times--)
   {
     m_av_clock->OMXStart(0.0);
+    m_av_clock->OMXPause();
+    m_av_clock->OMXStateExecute();
     printf("played");
     int ch[8];
     int chnum = 0;
