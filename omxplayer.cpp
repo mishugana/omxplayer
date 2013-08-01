@@ -1001,13 +1001,9 @@ int main(int argc, char *argv[])
   m_av_clock->OMXStateExecute();
 
   PrintSubtitleInfo();
-
-  while(!m_stop && loop_times--)
+loop_point:
+  while(!m_stop)
   {
-    m_av_clock->OMXStart(0.0);
-    m_av_clock->OMXPause();
-    m_av_clock->OMXStateExecute();
-    printf("played");
     int ch[8];
     int chnum = 0;
 
@@ -1494,7 +1490,11 @@ int main(int argc, char *argv[])
 
 do_exit:
 
-  
+  if (loop_times--)
+  {
+    printf("looped\n");
+    goto loop_point;
+  }
   if (m_stats)
     printf("\n");
 
