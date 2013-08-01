@@ -1494,10 +1494,14 @@ int main(int argc, char *argv[])
   }
 
 do_exit:
-  if(m_omx_reader.SeekTime((int)1, m_av_clock->OMXPlaySpeed() < 0, &startpts))
-  {
-  printf("Loop%d\n",loop_times);
-  }
+  if (loop_times--)
+	{
+  	if(m_omx_reader.SeekTime((int)1, m_av_clock->OMXPlaySpeed() < 0, &startpts))
+ 		{
+  	 	printf("Loop%d\n",loop_times);
+  		}
+	}
+	
   if (m_stats)
     printf("\n");
 
