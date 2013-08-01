@@ -117,7 +117,8 @@ bool              m_has_subtitle        = false;
 float             m_display_aspect      = 0.0f;
 bool              m_boost_on_downmix    = false;
 bool              m_gen_log             = false;
-
+int 		  m_loop_times 		= 0;
+ 
 enum{ERROR=-1,SUCCESS,ONEBYTE};
 
 static struct termios orig_termios;
@@ -450,7 +451,12 @@ bool Exists(const std::string& path)
   auto error = stat(path.c_str(), &buf);
   return !error || errno != ENOENT;
 }
-
+bool doLoop()
+{
+  if (loop_times--)
+  	return true;	
+  return false;
+}
 bool IsURL(const std::string& str)
 {
   auto result = str.find("://");
@@ -569,7 +575,7 @@ int main(int argc, char *argv[])
   float video_queue_size = 0.0;
   float m_threshold      = 0.1f; // amount of audio/video required to come out of buffering
   TV_DISPLAY_STATE_T   tv_state;
-  int loop_times = 0;
+ 
     
   const int font_opt        = 0x100;
   const int italic_font_opt = 0x201;
@@ -1490,21 +1496,10 @@ int main(int argc, char *argv[])
         m_omx_pkt = NULL;
       }
     }
-    do_exit:
-      if (loop_times--)
-	{
-  	if(m_omx_reader.SeekTime((int)1, m_av_clock->OMXPlaySpeed() < 0, &startpts))
- 		{
-  	 	printf("Loop%d\n",loop_times);
-  		}
-  	else
-  		{
-  		goto really_exit;
-  		}
-	}
+
   }
 
-really_exit:
+do_exit:
 
 	
   if (m_stats)
