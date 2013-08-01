@@ -1428,9 +1428,11 @@ int main(int argc, char *argv[])
       m_send_eos = false;
     if(m_omx_reader.IsEof()&&loop_times--)
     {
-    printf("looped");
-     if(m_omx_reader.SeekTime((int)seek_pos, m_av_clock->OMXPlaySpeed() < 0, &startpts))
-        ;
+    printf("looped\n");
+     if(m_omx_reader.SeekTime((int)1, m_av_clock->OMXPlaySpeed() < 0, &startpts))
+     {
+         FlushStreams(startpts);
+     }
     }
     if(m_omx_reader.IsEof() && !m_omx_pkt)
     {
