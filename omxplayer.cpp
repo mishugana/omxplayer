@@ -1002,8 +1002,10 @@ int main(int argc, char *argv[])
 
   PrintSubtitleInfo();
 
-  while(!m_stop)
+  while(!m_stop && loop_times--)
   {
+    m_av_clock->OMXStart(0.0);
+    printf("played");
     int ch[8];
     int chnum = 0;
 
