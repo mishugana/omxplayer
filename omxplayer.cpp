@@ -454,8 +454,14 @@ bool Exists(const std::string& path)
 bool doLoop()
 {
   if (m_loop_times--)
-  	return true;	
+    	if(m_omx_reader.SeekTime((int)1, m_av_clock->OMXPlaySpeed() < 0, &startpts))
+ 		{
+  	 	printf("Loop%d\n",loop_times);
+  	 	return true;	
+  		}
+  	
   return false;
+  
 }
 bool IsURL(const std::string& str)
 {
