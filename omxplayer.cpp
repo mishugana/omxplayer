@@ -1499,7 +1499,14 @@ int main(int argc, char *argv[])
         continue;
       }
       printf("OKOKOKOK\n");
-      break;
+      if(!doLoop())
+    	break;
+    else
+    	if(m_omx_reader.SeekTime((int)1, m_av_clock->OMXPlaySpeed() < 0, &startpts))
+ 	  {
+  	  printf("Looddp%d\n",m_loop_times);
+  	  }
+      
     }
 
     if(m_has_video && m_omx_pkt && m_omx_reader.IsActive(OMXSTREAM_VIDEO, m_omx_pkt->stream_index))
