@@ -1001,7 +1001,7 @@ int main(int argc, char *argv[])
   m_av_clock->OMXStateExecute();
 
   PrintSubtitleInfo();
-loop_point:
+
   while(!m_stop)
   {
     int ch[8];
@@ -1426,7 +1426,12 @@ loop_point:
 
     if(m_omx_pkt)
       m_send_eos = false;
-
+    if(m_omx_reader.IsEof()&&loop_times--)
+    {
+    printf("looped");
+     if(m_omx_reader.SeekTime((int)seek_pos, m_av_clock->OMXPlaySpeed() < 0, &startpts))
+        ;
+    }
     if(m_omx_reader.IsEof() && !m_omx_pkt)
     {
       // demuxer EOF, but may have not played out data yet
@@ -1490,11 +1495,6 @@ loop_point:
 
 do_exit:
 
-  if (loop_times--)
-  {
-    printf("looped\n");
-    goto loop_point;
-  }
   if (m_stats)
     printf("\n");
 
