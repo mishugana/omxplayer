@@ -1004,7 +1004,10 @@ int main(int argc, char *argv[])
 
   while(!m_stop && loop_times--)
   {
-    m_av_clock->OMXStart(0.0);
+    if (m_seek_pos !=0 && m_omx_reader.CanSeek()) {
+        printf("Seeking start of video to %i seconds\n", m_seek_pos);
+        m_omx_reader.SeekTime(m_seek_pos * 1000.0f, false, &startpts);  // from seconds to DVD_TIME_BASE
+    }
     printf("played");
     int ch[8];
     int chnum = 0;
