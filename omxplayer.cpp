@@ -454,11 +454,7 @@ bool Exists(const std::string& path)
 bool doLoop()
 {
   if (m_loop_times--)
-    	if(m_omx_reader.SeekTime((int)1, m_av_clock->OMXPlaySpeed() < 0, &startpts))
- 		{
-  	 	printf("Loop%d\n",loop_times);
-  	 	return true;	
-  		}
+	return true;
   	
   return false;
   
@@ -945,8 +941,14 @@ int main(int argc, char *argv[])
   }
   
   if(m_has_video && !m_player_video.Open(m_hints_video, m_av_clock, DestRect, m_Deinterlace ? 1:m_NoDeinterlace ? -1:0,
-                                         m_hdmi_clock_sync, m_thread_player, m_display_aspect, video_queue_size, video_fifo_size) && !doLoop())
-    goto do_exit;
+                                         m_hdmi_clock_sync, m_thread_player, m_display_aspect, video_queue_size, video_fifo_size) )
+    if(!doLoop())
+    	goto do_exit;
+    else
+    	if(m_omx_reader.SeekTime((int)1, m_av_clock->OMXPlaySpeed() < 0, &startpts))
+ 	  {
+  	  printf("Loop%d\n",loop_times);
+  	  }
 
   if(m_has_subtitle || m_osd)
   {
