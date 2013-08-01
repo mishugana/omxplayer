@@ -172,6 +172,7 @@ void print_usage()
   printf("         -r / --refresh                 adjust framerate/resolution to video\n");
   printf("         -g / --genlog                  generate log file\n");
   printf("         -l / --pos n                   start position (in seconds)\n");
+  printf("              --loop                    number of times to loop (e.g. 2 will play video 3 times)\n");
   printf("         -b / --blank                   set background to black\n");
   printf("              --boost-on-downmix        boost volume when downmixing\n");
   printf("              --vol n                   Set initial volume in millibels (default 0)\n");
@@ -568,7 +569,8 @@ int main(int argc, char *argv[])
   float video_queue_size = 0.0;
   float m_threshold      = 0.1f; // amount of audio/video required to come out of buffering
   TV_DISPLAY_STATE_T   tv_state;
-
+  int loop_times = 0;
+    
   const int font_opt        = 0x100;
   const int italic_font_opt = 0x201;
   const int font_size_opt   = 0x101;
@@ -587,6 +589,7 @@ int main(int argc, char *argv[])
   const int boost_on_downmix_opt = 0x200;
   const int key_config_opt  = 0x10d;
   const int no_osd_opt = 0x202;
+  const int loop_opt         = 0x204;
 
   struct option longopts[] = {
     { "info",         no_argument,        NULL,          'i' },
@@ -625,6 +628,7 @@ int main(int argc, char *argv[])
     { "boost-on-downmix", no_argument,    NULL,          boost_on_downmix_opt },
     { "key-config",   required_argument,  NULL,          key_config_opt },
     { "no-osd",       no_argument,        NULL,          no_osd_opt },
+    { "loop",         required_argument,  NULL,          loop_opt },
     { 0, 0, 0, 0 }
   };
 
@@ -759,6 +763,9 @@ int main(int argc, char *argv[])
         break;
       case video_queue_opt:
 	video_queue_size = atof(optarg);
+        break;
+      case loop_opt:
+	loop_times = atoi(optarg);
         break;
       case threshold_opt:
 	m_threshold = atof(optarg);
@@ -1482,6 +1489,12 @@ int main(int argc, char *argv[])
   }
 
 do_exit:
+  if(loop_times--)
+  {
+  printf("looped");
+  m_av_clock->OMXStart(0.0);
+  }
+  
   if (m_stats)
     printf("\n");
 
