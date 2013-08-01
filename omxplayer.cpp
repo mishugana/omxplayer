@@ -880,13 +880,13 @@ int main(int argc, char *argv[])
 
   if(!m_omx_reader.Open(m_filename.c_str(), m_dump_format))
   {
-    printf("THISIS 1");
+    printf("THISIS 1\n");
     goto do_exit;
   }
   
   if(m_dump_format)
   {
-    printf("THISIS 2");
+    printf("THISIS 2\n");
     goto do_exit;
   }
 
@@ -910,13 +910,13 @@ int main(int argc, char *argv[])
 
   if(!m_av_clock->OMXInitialize(m_has_video, m_has_audio))
   {
-    printf("THISIS 3");
+    printf("THISIS 3\n");
     goto do_exit;
   }
 
   if(m_hdmi_clock_sync && !m_av_clock->HDMIClockSync())
   {
-    printf("THISIS 4");
+    printf("THISIS 4\n");
     goto do_exit;
   }
 
@@ -956,7 +956,7 @@ int main(int argc, char *argv[])
                                          m_hdmi_clock_sync, m_thread_player, m_display_aspect, video_queue_size, video_fifo_size) )
     if(!doLoop())
     	  {
-    printf("THISIS 5");
+    printf("THISIS 5\n");
     goto do_exit;
   }
     else
@@ -985,7 +985,7 @@ int main(int argc, char *argv[])
                                 m_subtitle_lines,
                                 m_av_clock))
         {
-    printf("THISIS 6");
+    printf("THISIS 6\n");
     goto do_exit;
   }
   }
@@ -1027,7 +1027,7 @@ int main(int argc, char *argv[])
                                          m_passthrough, m_initialVolume, m_use_hw_audio,
                                          m_boost_on_downmix, m_thread_player, audio_queue_size, audio_fifo_size))
       {
-    printf("THISIS 8");
+    printf("THISIS 8\n");
     goto do_exit;
   }
 
@@ -1044,7 +1044,7 @@ int main(int argc, char *argv[])
 
     if(g_abort)
         {
-    printf("THISIS 9");
+    printf("THISIS 9\n");
     goto do_exit;
   }
     if (IsPipe(m_filename))
@@ -1337,7 +1337,7 @@ int main(int argc, char *argv[])
       if(m_has_video && !m_player_video.Open(m_hints_video, m_av_clock, DestRect, m_Deinterlace ? 1:m_NoDeinterlace ? -1:0,
                                          m_hdmi_clock_sync, m_thread_player, m_display_aspect, video_queue_size, video_fifo_size))
           {
-    printf("THISIS 11");
+    printf("THISIS 11\n");
        if(!doLoop())
     	goto do_exit;
     else
@@ -1538,11 +1538,9 @@ int main(int argc, char *argv[])
       }
     }
     
-       if(doLoop())
-    	if(m_omx_reader.SeekTime((int)1, m_av_clock->OMXPlaySpeed() < 0, &startpts))
- 	  {
+     
   	  printf("Looooop%d\n",m_loop_times);
-  	  }
+  	  
   }
 
 do_exit:
