@@ -1430,7 +1430,7 @@ int main(int argc, char *argv[])
   
     
      
-    }
+    
     if(m_omx_reader.IsEof() && !m_omx_pkt)
     {
       // demuxer EOF, but may have not played out data yet
@@ -1440,23 +1440,18 @@ int main(int argc, char *argv[])
         OMXClock::OMXSleep(10);
         continue;
       }
-      
-      	if (!m_send_eos && m_has_video)
-        	m_player_video.SubmitEOS();
-      	if (!m_send_eos && m_has_audio)
-        	m_player_audio.SubmitEOS();
-      	m_send_eos = true;
-      	if ( (m_has_video && !m_player_video.IsEOS()) ||
-           	(m_has_audio && !m_player_audio.IsEOS()) )
-      	{
-        	OMXClock::OMXSleep(10);
-        	continue;
-      	}
-      	break;
-      
-
-      
-      
+      if (!m_send_eos && m_has_video)
+        m_player_video.SubmitEOS();
+      if (!m_send_eos && m_has_audio)
+        m_player_audio.SubmitEOS();
+      m_send_eos = true;
+      if ( (m_has_video && !m_player_video.IsEOS()) ||
+           (m_has_audio && !m_player_audio.IsEOS()) )
+      {
+        OMXClock::OMXSleep(10);
+        continue;
+      }
+      break;
     }
 
     if(m_has_video && m_omx_pkt && m_omx_reader.IsActive(OMXSTREAM_VIDEO, m_omx_pkt->stream_index))
