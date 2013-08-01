@@ -1440,8 +1440,7 @@ int main(int argc, char *argv[])
         OMXClock::OMXSleep(10);
         continue;
       }
-      if(!loop_times--)
-      {
+      
       	if (!m_send_eos && m_has_video)
         	m_player_video.SubmitEOS();
       	if (!m_send_eos && m_has_audio)
@@ -1454,11 +1453,10 @@ int main(int argc, char *argv[])
         	continue;
       	}
       	break;
-      }
-      else
-      {
-      	if(m_omx_reader.SeekTime((int)1, m_av_clock->OMXPlaySpeed() < 0, &startpts))
-      }
+      
+
+      
+      
     }
 
     if(m_has_video && m_omx_pkt && m_omx_reader.IsActive(OMXSTREAM_VIDEO, m_omx_pkt->stream_index))
@@ -1497,6 +1495,7 @@ int main(int argc, char *argv[])
         m_omx_pkt = NULL;
       }
     }
+    
   }
 
 do_exit:
