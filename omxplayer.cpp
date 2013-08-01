@@ -1490,19 +1490,22 @@ int main(int argc, char *argv[])
         m_omx_pkt = NULL;
       }
     }
-    loop_point:
-    printf("here");
-  }
-
-do_exit:
-  if (loop_times--)
+    do_exit:
+      if (loop_times--)
 	{
   	if(m_omx_reader.SeekTime((int)1, m_av_clock->OMXPlaySpeed() < 0, &startpts))
  		{
   	 	printf("Loop%d\n",loop_times);
-  	 	goto loop_point;
+  		}
+  	else
+  		{
+  		goto really_exit;
   		}
 	}
+  }
+
+really_exit:
+
 	
   if (m_stats)
     printf("\n");
