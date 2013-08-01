@@ -879,10 +879,16 @@ int main(int argc, char *argv[])
   m_thread_player = true;
 
   if(!m_omx_reader.Open(m_filename.c_str(), m_dump_format))
+  {
+    printf("THISIS 1");
     goto do_exit;
-
+  }
+  
   if(m_dump_format)
+  {
+    printf("THISIS 2");
     goto do_exit;
+  }
 
   m_has_video     = m_omx_reader.VideoStreamCount();
   m_has_audio     = m_omx_reader.AudioStreamCount();
@@ -903,10 +909,16 @@ int main(int argc, char *argv[])
     m_hdmi_clock_sync = true;
 
   if(!m_av_clock->OMXInitialize(m_has_video, m_has_audio))
+  {
+    printf("THISIS 3");
     goto do_exit;
+  }
 
   if(m_hdmi_clock_sync && !m_av_clock->HDMIClockSync())
-      goto do_exit;
+  {
+    printf("THISIS 4");
+    goto do_exit;
+  }
 
   m_omx_reader.GetHints(OMXSTREAM_AUDIO, m_hints_audio);
   m_omx_reader.GetHints(OMXSTREAM_VIDEO, m_hints_video);
@@ -943,7 +955,10 @@ int main(int argc, char *argv[])
   if(m_has_video && !m_player_video.Open(m_hints_video, m_av_clock, DestRect, m_Deinterlace ? 1:m_NoDeinterlace ? -1:0,
                                          m_hdmi_clock_sync, m_thread_player, m_display_aspect, video_queue_size, video_fifo_size) )
     if(!doLoop())
-    	goto do_exit;
+    	  {
+    printf("THISIS 5");
+    goto do_exit;
+  }
     else
     	if(m_omx_reader.SeekTime((int)1, m_av_clock->OMXPlaySpeed() < 0, &startpts))
  	  {
@@ -969,7 +984,10 @@ int main(int argc, char *argv[])
                                 m_ghost_box,
                                 m_subtitle_lines,
                                 m_av_clock))
-      goto do_exit;
+        {
+    printf("THISIS 6");
+    goto do_exit;
+  }
   }
 
   if(m_has_subtitle)
@@ -1008,7 +1026,10 @@ int main(int argc, char *argv[])
   if(m_has_audio && !m_player_audio.Open(m_hints_audio, m_av_clock, &m_omx_reader, deviceString, 
                                          m_passthrough, m_initialVolume, m_use_hw_audio,
                                          m_boost_on_downmix, m_thread_player, audio_queue_size, audio_fifo_size))
+      {
+    printf("THISIS 8");
     goto do_exit;
+  }
 
   m_av_clock->OMXStart(0.0);
   m_av_clock->OMXPause();
@@ -1022,7 +1043,10 @@ int main(int argc, char *argv[])
     int chnum = 0;
 
     if(g_abort)
-      goto do_exit;
+        {
+    printf("THISIS 9");
+    goto do_exit;
+  }
     if (IsPipe(m_filename))
       ch[0] = EOF;
     else
@@ -1312,7 +1336,16 @@ int main(int argc, char *argv[])
       m_player_video.Close();
       if(m_has_video && !m_player_video.Open(m_hints_video, m_av_clock, DestRect, m_Deinterlace ? 1:m_NoDeinterlace ? -1:0,
                                          m_hdmi_clock_sync, m_thread_player, m_display_aspect, video_queue_size, video_fifo_size))
-        goto do_exit;
+          {
+    printf("THISIS 11");
+       if(!doLoop())
+    	goto do_exit;
+    else
+    	if(m_omx_reader.SeekTime((int)1, m_av_clock->OMXPlaySpeed() < 0, &startpts))
+ 	  {
+  	  printf("Loop%d\n",m_loop_times);
+  	  }
+  }
 
       CLog::Log(LOGDEBUG, "Seeked %.0f %.0f %.0f\n", DVD_MSEC_TO_TIME(seek_pos), startpts, m_av_clock->OMXMediaTime());
 
