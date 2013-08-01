@@ -453,7 +453,7 @@ bool Exists(const std::string& path)
 }
 bool doLoop()
 {
-  if (loop_times--)
+  if (m_loop_times--)
   	return true;	
   return false;
 }
@@ -771,7 +771,7 @@ int main(int argc, char *argv[])
 	video_queue_size = atof(optarg);
         break;
       case loop_opt:
-	loop_times = atoi(optarg);
+	m_loop_times = atoi(optarg);
         break;
       case threshold_opt:
 	m_threshold = atof(optarg);
@@ -939,7 +939,7 @@ int main(int argc, char *argv[])
   }
   
   if(m_has_video && !m_player_video.Open(m_hints_video, m_av_clock, DestRect, m_Deinterlace ? 1:m_NoDeinterlace ? -1:0,
-                                         m_hdmi_clock_sync, m_thread_player, m_display_aspect, video_queue_size, video_fifo_size))
+                                         m_hdmi_clock_sync, m_thread_player, m_display_aspect, video_queue_size, video_fifo_size) && !doLoop())
     goto do_exit;
 
   if(m_has_subtitle || m_osd)
